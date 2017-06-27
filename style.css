@@ -5,6 +5,12 @@ body{
   background-color:#f4f4f4;
 }
 
+#carouselButtons {
+    margin-left: 100px;
+    position: absolute;
+    bottom: 0px;
+}
+
 /* Global */
 .container{
   width:80%;
