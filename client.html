@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="author" content="Nahid Alam">
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="main.js"></script>
+        <title>Data Nerd</title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+
+    <body>
+      <header>
+        <div class="container">
+          <div id="branding">
+            <h1>Your Data Here</h1>
+          </div>
+        </div>
+      </header>
+      <br>
+      <div id="outer">
+      <br>
+      <section class = "borderclient" id="chat_zone">
+
+      </section> <br>
+
+      <section class = "borderclient" id="chat_zone2">
+
+      </section>
+      <br>
+    </div>
+        <script>
+            var socket = io.connect('http://www.ciscochill.com:80');
+            //var socket = io.connect('http://localhost:8080');
+            var count = 0;
+            var countGT = 0;
+            document.getElementById("chat_zone").style.display="none";
+            document.getElementById("chat_zone2").style.display="none";
+
+            // When a message is received it's inserted in the page
+            socket.on('C', function(data) {
+                //insertMessage(data)
+                count++;
+                if (count == 1){
+                  document.getElementById("chat_zone").style.display="block";
+                  //$('#chat_zone').prepend('<p><strong>' + data + '</strong></p>');
+                  $('#chat_zone').prepend('<strong>' + data + '</strong>');
+              }
+              else {
+                document.getElementById("chat_zone2").style.display="block";
+                //$('#chat_zone2').prepend('<p><strong>' + data + '</strong></p>');
+                $('#chat_zone2').prepend('<strong>' + data + '</strong>');
+              }
+            })
+
+            socket.on('W', function(data) {
+                document.getElementById("chat_zone").className = "blink";
+                /*setTimeout(function() {
+                  setInterval(function() {
+                    document.getElementById("chat_zone").style.borderColor = "#f4f4f4";
+                  }, 1000);
+                }, 500);
+
+                setInterval(function() {
+                  document.getElementById("chat_zone").style.borderColor = "red";
+                }, 1000);*/
+                var startTime = new Date().getTime();
+                var interval = setInterval(function(){
+                if(new Date().getTime() - startTime > 60000){
+                  clearInterval(interval);
+                  return;
+                }
+                //do whatever here..
+                document.getElementById("chat_zone").className = "borderclient";
+              }, 10000);
+
+            })
+
+            socket.on('wGT', function(data) {
+                //$('#chat_zone').prepend('<p><strong>' + 'Failed attempt to modify signature'+ '</strong></p>');
+                document.getElementById("chat_zone").className = "blink";
+                var startTime = new Date().getTime();
+                var interval = setInterval(function(){
+                if(new Date().getTime() - startTime > 60000){
+                  clearInterval(interval);
+                  return;
+                }
+                //do whatever here..
+                document.getElementById("chat_zone").className = "borderclient";
+              }, 10000);
+            })
+            socket.on('mGT', function(data) {
+              countGT++;
+              if (countGT == 1){
+                document.getElementById("chat_zone").style.display="block";
+                $('#chat_zone').prepend('<img id="imgABC" src="imgABC.png" />');
+              }
+              else {
+                document.getElementById("chat_zone2").style.display="block";
+                $('#chat_zone2').prepend('<img id="imgPQR" src="imgPQR.png" />');
+                $('#outer').addClass('borderexampleouterclient');
+              }
+            })
+
+            // Adds a message to the page
+            function insertMessage(message) {
+                //$('#chat_zone').prepend('<p><strong>' + message + '</strong></p>');
+                $('#chat_zone').prepend('<strong>' + message + '</strong>');
+            }
+        </script>
+    </body>
+</html>

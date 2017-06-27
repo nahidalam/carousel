@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="author" content="Nahid Alam">
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+    <title>Data Flow Architecture</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+
+  <body>
+    <header>
+      <div class="container">
+        <div id="branding">
+          <h1>Hybrid Data Model</h1>
+        </div>
+        <nav>
+          <ul>
+            <input type = "button" id = "btnReset" value = "Reset" onclick = "location.href='control.html';">
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section id="newsletter">
+      <div class="container">
+        <div class="buttonHolder">
+          <!--<input type = "button" id = "btnReset" value = "Reset" onclick = "location.href='control.html';">-->
+          <br><br><br>
+          <input type = "email" placeholder="Enter A Color" id = "txtNameDist"
+              onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('btnSubmit').click()">
+
+          <input type = "button" id = "btnSubmit" value = "Submit" onclick = "showHideLocal();"><br><br>
+          <input type = "button" id = "btnDistSave" value = "Save Again" class = "hiddenLocalButton">
+          <input type = "button" id = "btnDistAdd" value = "Add Data" class = "hiddenLocalButton">
+        </div>
+      </div>
+    </section>
+    <div id="outer">
+      <br><br>
+      <section class="borderexample" id="data_zone">
+
+      </section> <br>
+      <section class="borderexample" id="data_zone2">
+
+      </section>
+      <br>
+    </div>
+    <script>
+        var socket = io.connect('http://www.ciscochill.com:80');
+        //var socket = io.connect('http://localhost:8080');
+        document.getElementById("btnSubmit").style.display="none";
+        document.getElementById("data_zone2").style.display="none";
+        var gotName = localStorage.getItem("storageNameGT");
+        socket.emit('messageGT', gotName);
+        document.querySelector('#data_zone').innerHTML = '<p><strong><font size="6", face="Arial, Helvetica,sans-serif", color="#ffffff">' + gotName + '</font></strong></p>' + '<img id="imgABC" src="imgABC1.png" />';
+        //document.querySelector("#data_zone").innerHTML ='<p><strong>' + gotName + '<p><strong>' + '<div><img id="imgABC" src="imgABC.png" /><div>';
+
+        //document.querySelector("#data_zone").innerHTML ="<p><strong>" +gotName +"</strong></p>" +'<div><img id="imgABC" src="imgABC.png" /><div>';
+
+        $('#btnDistSave').click(function () {
+          var color = document.getElementById("txtNameDist").value;
+          document.querySelector('#data_zone').innerHTML = '<p><strong><font size="6", face="Arial, Helvetica,sans-serif", color="#ffffff">' + color + '</font></strong></p>' + '<img id="imgABC" src="imgXYZ1.png" />';
+          //document.querySelector("#data_zone").innerHTML = "<p><strong>" + color + "</strong></p>" + '<div><img id="imgABC" src="imgABC.png" /><div>';
+
+          //emit some signal telling its a wrong try
+          socket.emit('wrongGT', color);
+        })
+        $('#btnDistAdd').click(function () {
+          var color = document.getElementById("txtNameDist").value;
+
+          document.getElementById("btnDistSave").style.display="none";
+          document.getElementById("btnDistAdd").style.display="none";
+          document.getElementById("txtNameDist").style.display="none";
+          document.getElementById("data_zone2").style.display="block";
+          document.querySelector('#data_zone2').innerHTML = '<p><strong><font size="6", face="Arial, Helvetica,sans-serif", color="#ffffff">' + color + '</font></strong></p>' + '<img id="imgPQR" src="imgPQR1.png" />';
+          //document.querySelector("#data_zone2").innerHTML ="<p><strong>" +color +"</strong></p>" +'<div><img id="imgXYZ" src="imgXYZ.png" /><div>';
+          $('#outer').addClass('borderexampleouter');
+          //document.getElementById("outer").addClass = "borderexample";
+          //}
+          //send this data for adding
+          socket.emit('messageGT', color);
+        })
+    </script>
+  </body>
+</html>
