@@ -62,7 +62,7 @@
       </div>
     </div>
 
-    <!-- Left and right controls -->
+    <!-- Left and right controls
     <a class="left carousel-control" href="#myCarousel" role="button">
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
@@ -70,7 +70,7 @@
     <a class="right carousel-control" href="#myCarousel" role="button">
       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
-    </a>
+    </a>-->
   </div>
 </div>
 
@@ -101,10 +101,12 @@ $(document).ready(function(){
 
     $("#btnLocal").click(function(){
       console.log("Local Pressed");
-      document.getElementById("btnLocal").style.display="none";
-      document.getElementById("btnDist").style.display="none";
-      document.getElementById("btnGT").style.display="none";
-      document.getElementById("btnLocalSave").style.display="inline";
+      //document.getElementById("btnLocal").style.display="none";
+      //document.getElementById("btnDist").style.display="none";
+      //document.getElementById("btnGT").style.display="none";
+      //document.getElementById("btnLocalSave").style.display="inline";
+      localStorage.setItem("storageCountLocal",count);
+      location.href='local.html';
     });
 
     // Enable Carousel Indicators
